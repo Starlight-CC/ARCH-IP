@@ -1,0 +1,85 @@
+Computercraft Networking Task Force (CNTF)                                Ryan T
+Request For Comments: 0001                                             June 2025
+Category: Standard Proposal
+
+ ARCH-IP - An Interserver Computercraft Networking Protocol + ARCH-DNS Protocol
+
+Introduction:
+    ARCH-IP is a system for sending packets of data to and from Computercraft
+    computers both within a Minecraft server and between Computercraft computers
+    on two different Minecraft servers. ARCH-IP allows for inter-server
+    networking via the use of a primary Websocket server, which will be referred
+    to as the Backend Server, which will facilitate packet transmission between
+    Hub Computers on each Minecraft server connected to the network. The Central
+    System will also manage ARCH-DNS (Domain Name System), which allows for
+    IP Addresses to be assigned a human friendly Domain Name, like "test.com".
+    The ARCH-IP network is also designed to allow other protocols to be built
+    on top of it, which allows many different types of network traffic to
+    co-exist on the same network. The rest of this document will go into detail
+    on how the ARCH-IP networking system works, and how it can be implemented.
+
+Terminology:
+    Following this is a list of terms used in this document to describe ARCH-IP
+    and it's components, along with their definitions.
+    Backend Server
+        - Is a Websocket server that acts as the central connection point for
+          the whole network. All packets whos sender and recipients are on
+          different Minecraft servers have to go through this Websocket server.
+    Hub Computer
+        - Is a special computer in every Minecraft server connected to the
+          ARCH-IP network that is connected to the Backend Server. There must be
+          only ONE Hub Computer in a given Minecraft server, and it must ALWAYS
+          be running while that Minecraft server is in operation. In order to
+          transmit a packet to another Minecraft server, the packet must first
+          be sent to the Hub Computer on the Sender's server.
+    Node Computer
+        - Is a computer connected to the ARCH-IP network. Each Node must have a
+          unique IP Address, which will be used to tell the network which node
+          sent a packet and which node a packet needs to go to
+    IP Address
+        - Is a unique address that referes to a specific Node Computer. IP
+          Addresses are 24 bits and are written in the format X.Y.Z, where X, Y,
+          and Z are numbers ranging from 0 to 255. IP Addresses can either be
+          Static or Dynamic. Static IP Addresses are permanently assigned to one
+          Node, wheras Dynamic IP Addresses are temporarily assigned to a Node
+          and only last for a single network session.
+    Domain Name
+        - Is a human friendly name assigned to an IP Address. Domain names can
+          only be assigned to Static IPs, and consist of two parts: the Top
+          Level Domain (or TLD), and the Server Name, which are seperated by a
+          dot, such as "server.com". the TLD is used to specify the category of
+          server that the client is accessing (which goes after the dot), and
+          the Server Name is used to specify which specific server the client is
+          accessing.
+    Network Port
+        - Is a number used to categorize packet types and protocols. Port
+          numbers range from 0 to 65535, and one must be included in each packet
+          sent over the ARCH-IP network. Each protocol built on top of ARCH-IP
+          should specify a default port, and those port numbers should be unique
+          to every other protocol being actively used on the network.
+    Network Packet
+        - Is the smallest unit of data sent over the ARCH-IP network. Every
+          packet consists of the following information: ARCH Version (2 Bytes),
+          Sender IP (3 Bytes), Recipent IP (3 Bytes), Port (2 Bytes), Packet 
+          Length (2 Bytes), Payload (1-65,523 Bytes). The maximum total Packet
+          length is 65,535 bytes, including the header. To send more than 65,523
+          Bytes, you will need to split your transmission across two or more
+          packets, and include information in your protocol spec to tell the
+          different packets apart.
+
+IP Address Structure and Assignment:
+    IP address consist of three parts, written as X.Y.Z. Each of X, Y, and Z
+    range from 0-255. X indicates the Minecraft server where the Node Computer
+    is located, Y indicates the "Network Block" of the Node, and Z singles out
+    a specific Node. Server Networks IDs are assigned by the Backend Server, and
+    in order to add a Minecraft server to the network, the Backend Server
+    Operator will need to modify the Backend Server Registry. Within a Minecraft
+    Server, the Operator(s) of the server will be able to assign Network Blocks
+    and IP Address on the Hub Computer. Each Network Block can be assigned as
+    one of three types: Static Blocks, Dynamic Blocks, and Managed Blocks.
+    Static Blocks can have Static IP Addresses manually assigned by the Hub
+    Operators. Dynamic Blocks are open for Dynamic IP Addresses to be assigned
+    automatically when a client computer wants to connect to the network.
+    Managed Blocks are Blocks given out to people or organizations by the Hub
+    Operators, who then set up their own miniature Hubs, where they can assign
+    Static IPs within their Block and set aside sections for Dynamic IPs.
