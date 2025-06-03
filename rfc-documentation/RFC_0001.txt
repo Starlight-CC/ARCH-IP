@@ -2,7 +2,7 @@ Computercraft Networking Task Force (CNTF)                                Ryan T
 Request For Comments: 0001                                              Hunter T
 Category: Standard Proposal                                            June 2025
 
-            ARCH-IP - An Interserver Computercraft Networking Protocol
+           ARCH-IP - An Interserver Computercraft Networking Protocol
 
 Introduction:
     ARCH-IP is a system for sending packets of data to and from Computercraft
