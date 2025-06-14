@@ -6,8 +6,8 @@ Category: Protocol Specification
 
 Introduction:
     ISPCP is a peer to peer communication control protocol used for
-    communication with an ARCH-IP routing server, this protocol is used to
-    configure the ARCH-IP connection.
+    communication with an ARCH-IP provider server, this protocol is used to
+    configure the ARCH-IP connection with the provider.
     
 Overview:
     ISPCP is a simple protocol that contains three fields: "Protocol", "Payload
@@ -21,15 +21,7 @@ Technical specification:
     The protocol field tells the server how to handle the data, payload length
     describes the length of the payload; the payload may be any data.
     
-Sub-Protocols:
-    0: ARCH-IP | Payload data contains an ARCH-IP packet
-    1: AGET    | Data format is for an address request
-    
-AGET:
-    AGET is used to request an ARCH-IP address block to be assigned to the
-    current ISPCP session. This address block will remain assigned for the
-    duration of the ISPCP session. The returned data is 2 bytes containing "XX",
-    where XX is the two bytes containing the address block assigned to the
-    session. If AGET is sent to the server a second time, the currently assigned
-    block is returned. Appended to the two bytes on the response is the payload
-    which was sent with the initial request.
+Protocols:
+    The supported protocols depends on the service being accessed, thought a
+    global protocol of 0 is always supported. Protocol 0 is for ARCH-IP packets,
+    where the payload will contain the ARCH-IP packet.
