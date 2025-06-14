@@ -1,0 +1,54 @@
+Computercraft Networking Task Force (CNTF)                              Hunter T
+Request For Comments: 0003                                             June 2025
+Category: Protocol Specification
+
+                               ISPCP Protocols
+
+Overview:
+    This document describes the protocols which may be used within an ISPCP
+    packet.
+    
+Protocols:
+    Basic control:
+        x00: ARCH-IP
+            ARCH-IP Packet.
+        x01: AUTH
+            Authenticate connection.
+    
+    ARCH-IP Config with service provider:
+        x10: GETBLOCK
+            Requests the service provider for an ARCH-IP address block.
+    
+    ARCH-IP Config with master server:
+        x20: REQBLK
+            Request the master for the specified block or the next free block.
+        x21: FREBLK
+            Tell the master to free the specified block, or all blocks assigned
+            to the session.
+
+x01 - AUTH:
+    The request to the server must contain an authentication token, given by the
+    operator of the server. The response from the server will contain either the
+    value x00 (Fail) or xff (Valid).
+    
+x10 - GETBLOCK:
+    This is a request to an ARCH-IP service provider for a single block of
+    ARCH-IP addresses. There is no payload data to send. The response from the
+    server will contain the address block assigned to the session, 3 bytes,
+    these 3 bytes are the upper 24 bits of an ARCH-IP address. If requested
+    again, the service should responde with the address already assigned.
+    
+x20 - REQBLK:
+    Request for an address block to be assigned to the session. If the payload
+    contains no data, the server will responde with the first available address
+    block in the dynamic address range. If the payload contains an address
+    block, 3 bytes, the server will assign the specified block to the session if
+    available. The response from the server will be 3 bytes on success,
+    otherwise a payload size is 0 on error.
+    
+x21 - FREBLK:
+    Request the server to free blocks assigned to the session. If the request
+    payload size is 0, all address blocks assigned to the session are release.
+    If the payload size is 3 bytes, containing an address block. That specified
+    address block is released from the session. The server will always responde
+    with a payload size of 0.
