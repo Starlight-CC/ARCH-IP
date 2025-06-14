@@ -36,15 +36,17 @@ x10 - GETBLOCK:
     ARCH-IP addresses. There is no payload data to send. The response from the
     server will contain the address block assigned to the session, 3 bytes,
     these 3 bytes are the upper 24 bits of an ARCH-IP address. If requested
-    again, the service should responde with the address already assigned.
+    again, the service should responde with the address already assigned. If the
+    request could not be fulfilled, the response will contain a paylaod size of
+    0.
     
 x20 - REQBLK:
     Request for an address block to be assigned to the session. If the payload
     contains no data, the server will responde with the first available address
     block in the dynamic address range. If the payload contains an address
     block, 3 bytes, the server will assign the specified block to the session if
-    available. The response from the server will be 3 bytes on success,
-    otherwise a payload size is 0 on error.
+    available. The response from the server will be 3 bytes on success
+    (containing the assigned address), otherwise the payload size is 0 on error.
     
 x21 - FREBLK:
     Request the server to free blocks assigned to the session. If the request

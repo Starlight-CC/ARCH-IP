@@ -19,7 +19,8 @@ Technical specification:
     The "Protocol" field is 1 byte, the "Payload length" field is 2 bytes, and
     the "Payload" field is a variable size ranging between 0 and 2^16-3 bytes.
     The protocol field tells the server how to handle the data, payload length
-    describes the length of the payload; the payload may be any data.
+    describes the length of the payload; the payload may be any data. In all
+    supported protocols, byte order is always low to high.
     
 Protocols:
     The supported protocols depends on the service being accessed, thought a
