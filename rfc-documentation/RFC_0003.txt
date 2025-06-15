@@ -34,23 +34,24 @@ x01 - AUTH:
 x10 - GETBLOCK:
     This is a request to an ARCH-IP service provider for a single block of
     ARCH-IP addresses. There is no payload data to send. The response from the
-    server will contain the address block assigned to the session, 3 bytes,
-    these 3 bytes are the upper 24 bits of an ARCH-IP address. If requested
-    again, the service should responde with the address already assigned. If the
-    request could not be fulfilled, the response will contain a paylaod size of
-    0.
+    server will contain the address block assigned to the session, 4 bytes,
+    these 4 bytes are a 32 bit value containing the address block, the least
+    significant 8 bits are always 0. If requested again, the service should
+    responde with the address already assigned. If the request could not be
+    fulfilled, the response will contain a paylaod size of 0.
     
 x20 - REQBLK:
     Request for an address block to be assigned to the session. If the payload
     contains no data, the server will responde with the first available address
     block in the dynamic address range. If the payload contains an address
-    block, 3 bytes, the server will assign the specified block to the session if
-    available. The response from the server will be 3 bytes on success
-    (containing the assigned address), otherwise the payload size is 0 on error.
+    block, 4 bytes (least significant 8 bits ignored), the server will assign
+    the specified block to the session if available. The response from the
+    server will be 4 bytes on success (containing the assigned address block),
+    otherwise the payload size is 0 on error.
     
 x21 - FREBLK:
     Request the server to free blocks assigned to the session. If the request
     payload size is 0, all address blocks assigned to the session are release.
-    If the payload size is 3 bytes, containing an address block. That specified
-    address block is released from the session. The server will always responde
-    with a payload size of 0.
+    If the payload size is 4 bytes, containing an address block (least
+    significant 8 bits ignored), that specified address block is released from
+    the session. The server will always responde with a payload size of 0.

@@ -52,7 +52,7 @@ Terminology:
     Network Packet
     -   Is the smallest unit of data sent over the ARCH-IP network. Every
         packet consists of the following information: ARCH Version (2 Bytes),
-        Target IP (4 Bytes), Source IP (4 Bytes), Protocol Number (2 bytes),
+        Target Address (4 Bytes), Source Address (4 Bytes), Protocol Number (2 bytes),
         Packet Length (2 Bytes), Payload (1-65522 Bytes). The maximum total
         Packet length is 65,536 bytes, including the header. To send more than
         65,522 Bytes, you will need to split your transmission across two or
